@@ -1,0 +1,1165 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "goit-final-proj-solo-backend docs",
+    "description": "API documentation for GoIT final project."
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "https://goit-solo-tests-final-prg.herokuapp.com" }],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Test",
+      "description": "Test endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User endpoint"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse400"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse409"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authentication's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse400"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Email or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse403"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Google authentication",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation (redirect to http(https)://front-end-url/google-auth with TOKEN in query). Then use GET /user"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Get new pair of tokens (use Bearer {refreshToken} instead of {token})",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokensResponse200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/tech": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get 12 random TECH questions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechTest200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/theory": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "Get 12 random THEORY questions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TheoryTest200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/results/tech": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "Get TECH test results",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechResultsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResult200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/results/theory": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "Get THEORY test results",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TheoryResultsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResult200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user info",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserInfo200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized401"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidationResponse400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Message from validation"
+          }
+        }
+      },
+      "Unauthorized401": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "code": {
+            "type": "integer",
+            "example": "401"
+          },
+          "data": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "type": "string",
+            "example": "Not authorized"
+          }
+        }
+      },
+      "RegistrationRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse201": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "201"
+          },
+          "message": {
+            "type": "string",
+            "example": "user created"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "Session's access token valid for 1 hour (needed for all requests)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYiIsInNpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYyIsImlhdCI6MTYxNzg5NjA3NSwiZXhwIjoxNjE3ODk5Njc1fQ.2ndGVtos-mrm5anb8IHS-gjl4cPGDPjj8GKVSuft_3g"
+              },
+              "refreshToken": {
+                "type": "string",
+                "description": "Session's refresh token valid for 30 days (needed to refresh token)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYiIsInNpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYyIsImlhdCI6MTYxNzg5NjA3NSwiZXhwIjoxNjIwNDg4MDc1fQ.1KhLN3EBpCCwlx9GI9FrqR6ytmOUX3oFNCDpW-WE9EU"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "507f1f77bcf86cd799439012"
+              }
+            }
+          }
+        }
+      },
+      "RegistrationResponse409": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "code": {
+            "type": "integer",
+            "example": "409"
+          },
+          "message": {
+            "type": "string",
+            "example": "Email in use"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse200": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "Session's access token valid for 1 hour (needed for all requests)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYiIsInNpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYyIsImlhdCI6MTYxNzg5NjA3NSwiZXhwIjoxNjE3ODk5Njc1fQ.2ndGVtos-mrm5anb8IHS-gjl4cPGDPjj8GKVSuft_3g"
+              },
+              "refreshToken": {
+                "type": "string",
+                "description": "Session's refresh token valid for 30 days (needed to refresh token)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYiIsInNpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYyIsImlhdCI6MTYxNzg5NjA3NSwiZXhwIjoxNjIwNDg4MDc1fQ.1KhLN3EBpCCwlx9GI9FrqR6ytmOUX3oFNCDpW-WE9EU"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "507f1f77bcf86cd799439012"
+              }
+            }
+          }
+        }
+      },
+      "RefreshTokensResponse200": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "Session's access token valid for 1 hour (needed for all requests)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYiIsInNpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYyIsImlhdCI6MTYxNzg5NjA3NSwiZXhwIjoxNjE3ODk5Njc1fQ.2ndGVtos-mrm5anb8IHS-gjl4cPGDPjj8GKVSuft_3g"
+              },
+              "refreshToken": {
+                "type": "string",
+                "description": "Session's refresh token valid for 30 days (needed to refresh token)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYiIsInNpZCI6IjYwNmYyMjhiYzViNDhlMDFkY2RmNTdhYyIsImlhdCI6MTYxNzg5NjA3NSwiZXhwIjoxNjIwNDg4MDc1fQ.1KhLN3EBpCCwlx9GI9FrqR6ytmOUX3oFNCDpW-WE9EU"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "507f1f77bcf86cd799439012"
+              }
+            }
+          }
+        }
+      },
+      "LoginResponse403": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "code": {
+            "type": "integer",
+            "example": "403"
+          },
+          "message": {
+            "type": "string",
+            "example": "Email or password is wrong"
+          }
+        }
+      },
+      "TechTest200": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "tests": {
+                "type": "array",
+                "items": {
+                  "answers": {
+                    "type": "array",
+                    "description": "Answers to the question",
+                    "items": {
+                      "type": "string",
+                      "description": "Answer options"
+                    }
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "A question"
+                  },
+                  "questionId": {
+                    "type": "integer",
+                    "description": "Question's id"
+                  }
+                },
+                "example": [
+                  {
+                    "answers": [
+                      "Testing report",
+                      "Metrics",
+                      "Test Analysis Report",
+                      "Test case",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "What is superfluous in the criteria for completing testing",
+                    "questionId": 21
+                  },
+                  {
+                    "answers": ["5", "6", "7", "8", "9", "I don't know"],
+                    "question": "How many testing principles are there?",
+                    "questionId": 1
+                  },
+                  {
+                    "answers": [
+                      "Sprint Planning and Sprint Backlog Creation - Working on the sprint. Scrum meetings - Product testing and demonstration - Retrospective. Planning the next sprint",
+                      "Creating a product backlog - Working on a sprint. Scrum meetings - Product testing and demonstration - Retrospective. Planning the next sprint",
+                      "Product Backlog Creation - Sprint Planning and Sprint Backlog Creation - Product Testing and Demo - Retrospective. Planning the next sprint",
+                      "Creating a Product Backlog - Planning a Sprint and creating a Sprint Backlog - Working on a Sprint. Scrum meetings - Retrospective. Planning the next sprint",
+                      "Creating a Product Backlog - Planning a Sprint and creating a Sprint Backlog - Working on a Sprint. Scrum meetings - Product testing and demonstration",
+                      "All options are incorrect"
+                    ],
+                    "question": "The correct sequence of Scrum elements",
+                    "questionId": 9
+                  },
+                  {
+                    "answers": [
+                      "Currency testing",
+                      "Testing the web application",
+                      "Functional testing",
+                      "Interface testing",
+                      "Gamma testing",
+                      "I don't know"
+                    ],
+                    "question": "This is a comprehensive user testing of concurrent access to an application to verify the impact on a code, module or database. Mainly detects deadlocks in code.",
+                    "questionId": 22
+                  },
+                  {
+                    "answers": [
+                      "Who uses the product and which features are important to users, and which are secondary",
+                      "How users solve problems and problems, and who they are",
+                      "How you can attract more users; how to keep current ones and how to bring them to payment",
+                      "Why users abandon the product (it may be in an inconvenient interface, technical bugs, lack of necessary functions or cost)",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "Product Owner controls",
+                    "questionId": 12
+                  },
+                  {
+                    "answers": [
+                      "People and interactions are more important than processes and tools",
+                      "A working product is more important than comprehensive documentation",
+                      "Cooperation with the customer is more important than agreeing on the terms of the contract",
+                      "Being ready for change is more important than following the original plan",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "Agile's main ideas",
+                    "questionId": 7
+                  },
+                  {
+                    "answers": [
+                      "High transparency of development and project phases",
+                      "Stability of requirements",
+                      "Facilitates the work of drawing up a project plan and assembling a project team",
+                      "All requirements must be known at the beginning of the project life cycle",
+                      "Clear consistency",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "Which of the following is a MINUS in the Waterfall method?",
+                    "questionId": 4
+                  },
+                  {
+                    "answers": [
+                      "Collection and systematization of project requirements",
+                      "Work execution plan, KPI, mindmaps",
+                      "Search for performers, freelancers, drawing up a portrait of the desired employee for HR",
+                      "Setting tasks and monitoring deadlines",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "What skills are most often required from a project manager?",
+                    "questionId": 10
+                  },
+                  {
+                    "answers": [
+                      "Setting tasks and monitoring deadlines",
+                      "Control of budget spending",
+                      "Maintenance of project documentation (technical specifications, contracts, acts, invoices, estimates, reports)",
+                      "And once again - BUDGETS and TERMS - this is what is most important in his work",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "What are the tasks of the Product Owner?",
+                    "questionId": 11
+                  },
+                  {
+                    "answers": [
+                      "The stage at which the testing strategy is determined",
+                      "Software testing life cycle",
+                      "Final stage of software testing",
+                      "This abbreviation has nothing to do with testing",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "STLC is – ",
+                    "questionId": 17
+                  },
+                  {
+                    "answers": [
+                      "Currency testing",
+                      "Testing the web application",
+                      "Functional testing",
+                      "Interface testing",
+                      "Gamma testing",
+                      "I don't know"
+                    ],
+                    "question": "Item testing (or side testing) allows you to test individual work of source code units",
+                    "questionId": 24
+                  },
+                  {
+                    "answers": [
+                      "Currency testing",
+                      "Testing the web application",
+                      "Functional testing",
+                      "Interface testing",
+                      "Gamma testing",
+                      "I don't know"
+                    ],
+                    "question": "Interface testing checks the interaction of individual modules. Most often used to test the user interface of GUI applications",
+                    "questionId": 25
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "TheoryTest200": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "tests": {
+                "type": "array",
+                "items": {
+                  "answers": {
+                    "type": "array",
+                    "description": "Answers to the question",
+                    "items": {
+                      "type": "string",
+                      "description": "Answer options"
+                    }
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "A question"
+                  },
+                  "questionId": {
+                    "type": "integer",
+                    "description": "Question's id"
+                  }
+                },
+                "example": [
+                  {
+                    "answers": [
+                      "State transition",
+                      "Decision table",
+                      "Boundary value analysis",
+                      "Data stream",
+                      "All options are correct",
+                      "All options are incorrent"
+                    ],
+                    "question": "Which of the following is not part of specification-based testing?",
+                    "questionId": 22
+                  },
+                  {
+                    "answers": [
+                      "html/body/div/[3]/div/div/[1]/div/div/div[1]/div/input",
+                      "html/body/div(3)/div/div(1)/div/div/div)1)/div/input",
+                      "html\bodydiv[3]divdiv[1]divdivdiv[1]divinput/",
+                      "html//body/div[3]/div/div[1]/div/div/div[1]/div/input",
+                      "html/body/div[3]/div/div[1]/div/div/div[1]/div/input"
+                    ],
+                    "question": "Provide correct example of Absolute XPath",
+                    "questionId": 5
+                  },
+                  {
+                    "answers": [
+                      "Summary",
+                      "Attachments",
+                      "Status",
+                      "Severity",
+                      "All options are correct",
+                      "All options are incorrent"
+                    ],
+                    "question": "Which of the following is a bug report attribute",
+                    "questionId": 12
+                  },
+                  {
+                    "answers": [
+                      "Returns the user to the previous page from the browser history",
+                      "Allows the user to navigate to the next page according to the browser history",
+                      "Used to refresh the browser page",
+                      "Allows the user to open a new window in the browser and follow the specified URL",
+                      "There is no such command"
+                    ],
+                    "question": "navigate().refresh(). This navigation command in Selenium:",
+                    "questionId": 10
+                  },
+                  {
+                    "answers": [
+                      "ID, ClassName",
+                      "Name, TagName",
+                      "LinkText, PartialLinkText",
+                      "Xpath, CSS Selector, DOM",
+                      "All options are correct",
+                      "All options are incorrect"
+                    ],
+                    "question": "What are the main types of locators in Selenium?",
+                    "questionId": 4
+                  },
+                  {
+                    "answers": [
+                      "Returns the user to the previous page from the browser history",
+                      "Allows the user to navigate to the next page according to the browser history",
+                      "Used to refresh the browser page",
+                      "Allows the user to open a new window in the browser and follow the specified URL",
+                      "There is no such command"
+                    ],
+                    "question": "navigate().forward(). This navigation command in Selenium:",
+                    "questionId": 9
+                  },
+                  {
+                    "answers": [
+                      "Incremental",
+                      "Spiral Model",
+                      "V model",
+                      "RAD",
+                      "All options are correct",
+                      "All options are incorrent"
+                    ],
+                    "question": "Which of the following is not an iterative model?",
+                    "questionId": 27
+                  },
+                  {
+                    "answers": [
+                      "Cmd+Opt+O",
+                      "Cmd+Opt+R",
+                      "Cmd+Opt+J",
+                      "Cmd+Opt+N",
+                      "Cmd+Opt+W"
+                    ],
+                    "question": "Most often, viewing items in the Google Chrome browser on Mac is launched by this key combination",
+                    "questionId": 7
+                  },
+                  {
+                    "answers": [
+                      "10-20",
+                      "40-50",
+                      "5-10",
+                      "70-80",
+                      "All options are correct",
+                      "All options are incorrent"
+                    ],
+                    "question": "What is the percentage of software development costs?",
+                    "questionId": 26
+                  },
+                  {
+                    "answers": ["F5", "F7", "F2", "F9", "F12"],
+                    "question": "Most often, viewing elements in the Google Chrome browser on windows is launched by the button",
+                    "questionId": 6
+                  },
+                  {
+                    "answers": [
+                      "Stress testing",
+                      "Performance testing",
+                      "Functional testing",
+                      "Centiliter",
+                      "All options are correct",
+                      "All options are incorrent"
+                    ],
+                    "question": "Testing outside of normal performance is",
+                    "questionId": 15
+                  },
+                  {
+                    "answers": [
+                      "If both are running, do sanity tests first and then smoke testing",
+                      "Sanity Testing is also called Tester Acceptance Testing",
+                      "Smoke and sanity tests can be performed using an automation tool",
+                      "Smoke testing performed for a specific build is also called build verification test",
+                      "All options are correct",
+                      "All options are incorrent"
+                    ],
+                    "question": "What's wrong appealing to Smoke and sanity tests?",
+                    "questionId": 18
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "TechResultsBody": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "integer",
+                  "description": "Question's id"
+                },
+                "answer": {
+                  "type": "string",
+                  "description": "Answer to the question"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "answers": [
+            {
+              "questionId": 2,
+              "answer": "All options are incorrect"
+            },
+            {
+              "questionId": 21,
+              "answer": "Test case"
+            },
+            {
+              "questionId": 14,
+              "answer": "Verification of software, according to the test plan, test procedures and relevant documentation, taking into account the wishes of the client"
+            },
+            {
+              "questionId": 13,
+              "answer": "This is testing by executing a code or program with different input values and confirming the results"
+            },
+            {
+              "questionId": 22,
+              "answer": "Gamma testing"
+            },
+            {
+              "questionId": 19,
+              "answer": "All options are correct"
+            },
+            {
+              "questionId": 17,
+              "answer": "Software testing life cycle"
+            },
+            {
+              "questionId": 5,
+              "answer": "Kanban"
+            },
+            {
+              "questionId": 3,
+              "answer": "All options are correct"
+            },
+            {
+              "questionId": 10,
+              "answer": "All options are correct"
+            },
+            {
+              "questionId": 6,
+              "answer": "eXtreme Programming"
+            },
+            {
+              "questionId": 25,
+              "answer": "I don't know"
+            }
+          ]
+        }
+      },
+      "TheoryResultsBody": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "integer",
+                  "description": "Question's id"
+                },
+                "answer": {
+                  "type": "string",
+                  "description": "Answer to the question"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "answers": [
+            {
+              "questionId": 25,
+              "answer": "1: 6: 10: 1000"
+            },
+            {
+              "questionId": 22,
+              "answer": "Data stream"
+            },
+            {
+              "questionId": 19,
+              "answer": "Test cases should be reviewed and revised regularly"
+            },
+            {
+              "questionId": 17,
+              "answer": "When we press the submit button"
+            },
+            {
+              "questionId": 21,
+              "answer": "Causes and effects of coverage"
+            },
+            {
+              "questionId": 14,
+              "answer": "Hidden defect"
+            },
+            {
+              "questionId": 13,
+              "answer": "Vulnerability testing"
+            },
+            {
+              "questionId": 27,
+              "answer": "V model"
+            },
+            {
+              "questionId": 29,
+              "answer": "All options are incorrect"
+            },
+            {
+              "questionId": 30,
+              "answer": "Gorilla Testing"
+            },
+            {
+              "questionId": 3,
+              "answer": "All options are correct"
+            },
+            {
+              "questionId": 2,
+              "answer": "Requirements Management - Product Analysis - Developing a Test Strategy and Planning Quality Control Procedures - Prototype Testing - Generating Test Documentation - Basic Testing - Stabilization - Operation"
+            }
+          ]
+        }
+      },
+      "TestResult200": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "integer"
+              },
+              "mainMessage": {
+                "type": "string"
+              },
+              "secondaryMessage": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "result": 92,
+              "mainMessage": "Great!",
+              "secondaryMessage": "You have very strong tech knowledge"
+            }
+          }
+        }
+      },
+      "GetUserInfo200": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "507f1f77bcf86cd799439012"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
