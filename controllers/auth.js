@@ -1,18 +1,13 @@
 const jwt = require("jsonwebtoken");
 const Users = require("../model/users");
 const Sessions = require("../model/sessions");
-// const fs = require("fs/promises");
-// const path = require("path");
-// const Jimp = require("jimp");
 const { v4: uuidv4 } = require("uuid");
-// const checkOrMakeFolder = require("../helpers/create-dir");
 const queryString = require("query-string");
 const axios = require("axios");
 const { HttpCode, Status } = require("../helpers/constants");
 require("dotenv").config();
 
 const SECRET_KEY = process.env.JWT_SECRET;
-// const PORT = process.env.PORT;
 
 const register = async ({ body }, res, next) => {
   try {
@@ -29,9 +24,9 @@ const register = async ({ body }, res, next) => {
     const session = await Sessions.create(id, null, null);
     const sid = session._id;
     const payload = { id, sid };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5m" });
     const refreshToken = jwt.sign(payload, SECRET_KEY, {
-      expiresIn: "30d",
+      expiresIn: "1d",
     });
     await Users.addSession(id, sid);
     await Sessions.updateTokens(sid, token, refreshToken);
@@ -66,9 +61,9 @@ const login = async ({ body }, res, next) => {
     const session = await Sessions.create(id, null, null);
     const sid = session._id;
     const payload = { id, sid };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5m" });
     const refreshToken = jwt.sign(payload, SECRET_KEY, {
-      expiresIn: "30d",
+      expiresIn: "1d",
     });
     await Users.addSession(id, sid);
     await Sessions.updateTokens(sid, token, refreshToken);
@@ -164,9 +159,9 @@ const googleRedirect = async (req, res) => {
   const session = await Sessions.create(id, null, null);
   const sid = session._id;
   const payload = { id, sid };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5m" });
   const refreshToken = jwt.sign(payload, SECRET_KEY, {
-    expiresIn: "30d",
+    expiresIn: "1d",
   });
   await Users.addSession(id, sid);
   await Sessions.updateTokens(sid, token, refreshToken);
@@ -185,9 +180,9 @@ const refresh = async ({ user, session }, res, next) => {
     const newSession = await Sessions.create(id, null, null);
     const sid = newSession._id;
     const payload = { id, sid };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "5m" });
     const refreshToken = jwt.sign(payload, SECRET_KEY, {
-      expiresIn: "30d",
+      expiresIn: "1d",
     });
     await Users.addSession(id, sid);
     await Sessions.updateTokens(sid, token, refreshToken);
