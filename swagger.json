@@ -2,12 +2,12 @@
   "openapi": "3.0.1",
   "info": {
     "version": "1.0.0",
-    "title": "goit-final-proj-solo-backend docs",
+    "title": "goit-final-proj-gr7-backend docs",
     "description": "API documentation for GoIT final project. [Backend github repository](https://github.com/Salimyaro/BACKEND-QAtesting)"
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://goit-solo-tests-final-prg.herokuapp.com" }],
+  "servers": [{ "url": "https://fin-proj-gr7.herokuapp.com" }],
   "tags": [
     {
       "name": "Auth",
@@ -1118,7 +1118,7 @@
               }
             },
             "example": {
-              "result": 92,
+              "result": 12,
               "mainMessage": "Great!",
               "secondaryMessage": "You have very strong tech knowledge"
             }

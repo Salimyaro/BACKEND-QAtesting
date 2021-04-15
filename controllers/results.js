@@ -14,28 +14,28 @@ const getTechResult = async (req, res, next) => {
       }
       return sum;
     }, 0);
-    const result = Math.round((correctCount / 12) * 100);
+    const result = correctCount;
     let mainMessage;
     let secondaryMessage;
     switch (result) {
-      case 100:
-      case 92:
-      case 83:
+      case 12:
+      case 11:
+      case 10:
         mainMessage = "Great!";
         secondaryMessage = "Congratulations, you have a great tech knowledge";
         break;
-      case 75:
-      case 67:
-      case 58:
-      case 50:
+      case 9:
+      case 8:
+      case 7:
+      case 6:
         mainMessage = "Not bad!";
         secondaryMessage = "But you still need to learn some materials";
         break;
-      case 42:
-      case 33:
-      case 25:
-      case 17:
-      case 8:
+      case 5:
+      case 4:
+      case 3:
+      case 2:
+      case 1:
       case 0:
         mainMessage = "Keep learning!";
         secondaryMessage = "You still have a lot to learn, keep going!";
@@ -69,28 +69,28 @@ const getTheoryResult = async (req, res, next) => {
       }
       return sum;
     }, 0);
-    const result = Math.round((correctCount / 12) * 100);
+    const result = correctCount;
     let mainMessage;
     let secondaryMessage;
     switch (result) {
-      case 100:
-      case 92:
-      case 83:
+      case 12:
+      case 11:
+      case 10:
         mainMessage = "Great!";
         secondaryMessage = "Congratulations, you have a great theory knowledge";
         break;
-      case 75:
-      case 67:
-      case 58:
-      case 50:
+      case 9:
+      case 8:
+      case 7:
+      case 6:
         mainMessage = "Not bad!";
         secondaryMessage = "But you still need to learn some materials";
         break;
-      case 42:
-      case 33:
-      case 25:
-      case 17:
-      case 8:
+      case 5:
+      case 4:
+      case 3:
+      case 2:
+      case 1:
       case 0:
         mainMessage = "Keep learning!";
         secondaryMessage = "You still have a lot to learn, keep going!";
